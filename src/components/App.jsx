@@ -1,35 +1,47 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import FeedbackOptions from './FeedbackOptions';
 import Statistics from './Statistics';
 import Notification from './Notification';
 
-export class App extends Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  };
+export function App() {
+    const [good, setGood] = useState(0);
+    const [neutral, setNeutral] = useState(0);
+    const [bad, setBad] = useState(0);
+    const [total, setTotal] = useState(0);
+    const [positivePercentage, setPositivePercentage] = useState(0);
 
-  hundleIncrement = option => {
-    this.setState(preState => ({ [option]: preState[option] + 1 }));
-  };
+  useEffect(() => {
+        setTotal([good, neutral, bad].reduce((acc, value) => acc + value, 0));
+    }, [good, neutral, bad]);
 
-  countTotalFeedback = () => {
-    const { good, bad, neutral } = this.state;
-      return good + neutral + bad;
-  };
+    useEffect(() => {
+        setPositivePercentage(Math.round((good / total) * 100));
+    }, [good, total]);
 
-  countPositiveFeedbackPercentage = (a, b) => {
-    return Math.round((a / b) * 100) + '%';
-  };
+    const onLeaveFeedback = feedback => {
+        switch (feedback) {
+            case 'good':
+                setGood(good => good + 1);
+                break;
 
-  render() {
-    const { good, neutral, bad } = this.state;
+            case 'neutral':
+                setNeutral(neutral => neutral + 1);
+                break;
+
+            case 'bad':
+                setBad(bad => bad + 1);
+                break;
+
+            default:
+                return;
+        }
+    };
+  
     return (
       <>
         <FeedbackOptions
-          options={Object.keys(this.state)}
-          onLeaveFeedback={this.hundleIncrement}
+          options={Object.keys({good, bad, neutral})}
+          onLeaveFeedback={onLeaveFeedback}
         />
         {this.countTotalFeedback() > 0 ? (
           <Statistics
@@ -37,12 +49,12 @@ export class App extends Component {
             neutral={neutral}
             bad={bad}
             total={this.countTotalFeedback()}
-            positivePercentage={this.countPositiveFeedbackPercentage}
+            positivePercentage={positivePercentage}
           />
         ) : (
           <Notification message="There is no feedback" />
         )}
       </>
     );
-  }
+  
 }
