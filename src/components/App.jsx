@@ -9,16 +9,16 @@ export function App() {
     const [bad, setBad] = useState(0);
     const [total, setTotal] = useState(0);
     const [positivePercentage, setPositivePercentage] = useState(0);
-
+  
   useEffect(() => {
         setTotal([good, neutral, bad].reduce((acc, value) => acc + value, 0));
     }, [good, neutral, bad]);
 
     useEffect(() => {
-        setPositivePercentage(Math.round((good / total) * 100));
-    }, [good, total]);
-
-    const onLeaveFeedback = feedback => {
+        setPositivePercentage(Math.round((good / total) * 100)+ '%');
+    }, [good, total]); 
+  
+   const onLeaveFeedback = feedback => {
         switch (feedback) {
             case 'good':
                 setGood(good => good + 1);
@@ -36,19 +36,20 @@ export function App() {
                 return;
         }
     };
-  
+
+
     return (
       <>
         <FeedbackOptions
           options={Object.keys({good, bad, neutral})}
           onLeaveFeedback={onLeaveFeedback}
         />
-        {this.countTotalFeedback() > 0 ? (
+        {total > 0 ? (
           <Statistics
             good={good}
             neutral={neutral}
             bad={bad}
-            total={this.countTotalFeedback()}
+            total={total}
             positivePercentage={positivePercentage}
           />
         ) : (
