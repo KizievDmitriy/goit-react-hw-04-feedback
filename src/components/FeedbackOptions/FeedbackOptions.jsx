@@ -1,30 +1,23 @@
-import { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import SectionTitle from '..//SectionTitle';
 import { Button } from './FeedbackOptions.styled';
 
-class FeedbackOptions extends Component {
-  static propTypes = {
-    options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    onLeaveFeedback: PropTypes.func.isRequired,
-  };
+const FeedbackOptions = ({ options, onLeaveFeedback }) => {
+  return (
+    <SectionTitle title="Please leave feedback">
+      {options.map(({ name }) => (
+        <Button key={name} name={name} type="button" onClick={onLeaveFeedback}>
+          {name}
+        </Button>
+      ))}
+    </SectionTitle>
+  );
+};
 
-  render() {
-    const { options, onLeaveFeedback } = this.props;
-    return (
-      <SectionTitle title="Please leave feedback">
-        {options.map(option => (
-          <Button
-            key={[option]}
-            type="button"
-            onClick={() => onLeaveFeedback(option)}
-          >
-            {option}
-          </Button>
-        ))}
-      </SectionTitle>
-    );
-  }
-}
+FeedbackOptions.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  onLeaveFeedback: PropTypes.func.isRequired,
+};
 
 export default FeedbackOptions;

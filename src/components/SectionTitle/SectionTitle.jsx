@@ -9,9 +9,10 @@ const SectionTitle = ({ children, title }) => {
     </Section>
   );
 };
-export default SectionTitle;
 
 SectionTitle.propTypes = {
   children: PropTypes.node,
   title: PropTypes.string,
 };
+
+export default SectionTitle;

@@ -1,21 +1,18 @@
-import { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import { Paragraf } from './Notification.styled';
 import SectionTitle from '../SectionTitle';
 
-class Notification extends Component {
-  static propTypes = {
-    message: PropTypes.string.isRequired,
-  };
+const Notification = ({ message }) => {
+  return (
+    <SectionTitle>
+      <Paragraf>{message}</Paragraf>
+    </SectionTitle>
+  );
+};
 
-  render() {
-    const { message } = this.props;
-    return (
-      <SectionTitle>
-        <Paragraf>{message}</Paragraf>
-      </SectionTitle>
-    );
-  }
-}
+Notification.propTypes = {
+  message: PropTypes.string.isRequired,
+};
 
 export default Notification;
